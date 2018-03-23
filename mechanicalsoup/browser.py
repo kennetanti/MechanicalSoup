@@ -148,8 +148,9 @@ class Browser(object):
         # read https://www.w3.org/TR/html52/sec-forms.html
         data = kwargs.pop("data", dict())
         files = kwargs.pop("files", dict())
-
-        for input in form.select("input[name], button[name]"):
+        inputs = form.select("input[name], button[name]")
+        for inputNumber in range(len(inputs)):
+            input = inputs[inputNumber]
             name = input.get("name")
 
             if input.get("type") in ("radio", "checkbox"):
@@ -176,20 +177,24 @@ class Browser(object):
 
             else:
                 data[name] = value
-
-        for textarea in form.select("textarea"):
+        textareas = form.select("textarea")
+        for textareaNumber in range(len(textareas)):
+            textarea = textareas[textareaNumber]
             name = textarea.get("name")
             if not name:
                 continue
             data[name] = textarea.text
-
-        for select in form.select("select"):
+        selects = form.select("select")
+        for selectNumber in range(len(selects)):
+            select = selects[selectNumber]
             name = select.get("name")
             if not name:
                 continue
             multiple = "multiple" in select.attrs
             values = []
-            for i, option in enumerate(select.select("option")):
+            options = select.select("option")
+            for i in range(len(options)):
+                option = options[i]
                 if (i == 0 and not multiple) or "selected" in option.attrs:
                     values.append(option.get("value", ""))
             if multiple:

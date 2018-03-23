@@ -54,8 +54,9 @@ class Form(object):
         value ``username``, and the input element named "password" and
         give it the value ``password``.
         """
-
-        for (name, value) in data.items():
+        dataKeys = data.keys()
+        for name in range(len(dataKeys)):
+            value = data[dataKeys[name]]
             i = self.form.find("input", {"name": name})
             if not i:
                 raise InvalidFormMethod("No input field named " + name)
@@ -65,9 +66,10 @@ class Form(object):
         """Remove the *checked*-attribute of all input elements with
         a *name*-attribute given by ``name``.
         """
-        for option in self.form.find_all("input", {"name": name}):
-            if "checked" in option.attrs:
-                del option.attrs["checked"]
+        inputs = self.form.find_all("input", {"name": name})
+        for optionNumber in range(len(inputs)):
+            if "checked" in inputs[optionNumber].attrs:
+                del inputs[optionNumber].attrs["checked"]
 
     def check(self, data):
         """For backwards compatibility, this method handles checkboxes
@@ -75,7 +77,9 @@ class Form(object):
         checkboxes unless explicitly specified by ``data``, in contrast
         with the default behavior of :func:`~Form.set_checkbox`.
         """
-        for (name, value) in data.items():
+        dataKeys = data.keys()
+        for name in range(len(dataKeys)):
+            value = data[dataKeys[name]]
             try:
                 self.set_checkbox({name: value}, uncheck_other_boxes=False)
                 continue
@@ -102,7 +106,9 @@ class Form(object):
             Consider setting to False if some boxes are checked by default when
             the HTML is served.
         """
-        for (name, value) in data.items():
+        dataKeys = data.keys()
+        for name in range(len(dataKeys)):
+            value = data[dataKeys[name]]
             checkboxes = self.form.find_all("input", {"name": name},
                                             type="checkbox")
             if not checkboxes:
@@ -172,7 +178,9 @@ class Form(object):
             The textarea whose *name*-attribute is ``name`` will have
             its *string*-attribute set to ``value``.
         """
-        for (name, value) in data.items():
+        dataKeys = data.keys()
+        for name in range(len(dataKeys)):
+            value = data[dataKeys[name]]
             t = self.form.find("textarea", {"name": name})
             if not t:
                 raise InvalidFormMethod("No textarea named " + name)
@@ -189,7 +197,9 @@ class Form(object):
             *multiple*-attribute is set, then ``value`` can be a list
             or tuple to select multiple options.
         """
-        for (name, value) in data.items():
+        dataKeys = data.keys()
+        for name in range(len(dataKeys)):
+            value = data[dataKeys[name]]
             select = self.form.find("select", {"name": name})
             if not select:
                 raise InvalidFormMethod("No select named " + name)
@@ -246,7 +256,9 @@ class Form(object):
             form.set("tagname") = path_to_local_file
 
         """
-        for func in ("checkbox", "radio", "input", "textarea", "select"):
+        set_types = ["checkbox", "radio", "input", "textarea", "select"]
+        for t in range(len(set_types)):
+            func = set_types[t]
             try:
                 getattr(self, "set_" + func)({name: value})
                 return
@@ -263,11 +275,11 @@ class Form(object):
         The arguments set the attributes of the new element.
         """
         old_input = self.form.find_all('input', {'name': name})
-        for old in old_input:
-            old.decompose()
+        for old in range(len(old_input)):
+            old_input[old].decompose()
         old_textarea = self.form.find_all('textarea', {'name': name})
-        for old in old_textarea:
-            old.decompose()
+        for old in range(len(old_textarea)):
+            old_textarea[old].decompose()
         # We don't have access to the original soup object (just the
         # Tag), so we instantiate a new BeautifulSoup() to call
         # new_tag(). We're only building the soup object, not parsing
@@ -277,8 +289,9 @@ class Form(object):
         control['type'] = type
         control['name'] = name
         control['value'] = value
-        for k, v in kwargs.items():
-            control[k] = v
+        ks = kwargs.keys()
+        for k in range(len(ks)):
+            control[k] = kwargs[k]
         self.form.append(control)
         return control
 
@@ -306,7 +319,8 @@ class Form(object):
 
         found = False
         inps = self.form.select('input[type="submit"], button[type="submit"]')
-        for inp in inps:
+        for i in range(len(inps)):
+            inp = inps[i]
             if inp == submit or (inp.has_attr('name') and
                                  inp['name'] == submit):
                 if found:
@@ -328,12 +342,14 @@ class Form(object):
 
         May help finding which fields need to be filled-in.
         """
-        for input in self.form.find_all(
-                ("input", "textarea", "select")):
+        inputs = self.form.find_all(("input", "textarea", "select"))
+        for i in range(len(inputs)):
+            input = inputs[i]
             input_copy = copy.copy(input)
             # Text between the opening tag and the closing tag often
             # contains a lot of spaces that we don't want here.
-            for subtag in input_copy.find_all() + [input_copy]:
-                if subtag.string:
-                    subtag.string = subtag.string.strip()
+            subtags = input_copy.find_all() + [input_copy]
+            for subtagNumber in range(len(subtags)):
+                if subtags[subtagNumber].string:
+                    subtags[subtagNumber].string = subtags[subtagNumber].string.strip()
             print(input_copy)

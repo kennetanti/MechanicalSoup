@@ -1,10 +1,10 @@
-from distutils.core import setup
+from setuptools import setup, Extension
 from Cython.Build import cythonize
 from codecs import open  # To use a consistent encoding
 from os import path
 import re
 
-extensions = [Extension("mechanicalsoup/*", ["*.pyx", "*.py"])]
+extensions = [Extension("mechanicalsoup/*", ["mechanicalsoup/*.py"])]
 
 def requirements_from_file(filename):
     """Parses a pip requirements file into a list."""
@@ -58,7 +58,7 @@ setup(
     ],
 
     packages=['mechanicalsoup'],
-    ext_modules=cythonize(extentions),
+    ext_modules=cythonize(extensions),
 
     # List run-time dependencies here. These will be installed by pip
     # when your project is installed. For an analysis of
