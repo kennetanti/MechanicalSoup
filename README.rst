@@ -1,13 +1,16 @@
-MechanicalSoup
+MechanicalSoup - Cython (In progress)
 ==============
 
 Home page
 ---------
-
+You can find the original documentation at:
 https://mechanicalsoup.readthedocs.io/
+all of it should be identical.
 
 Overview
 --------
+
+This is a cython reproduction of mechanicalsoup providing superior speed while still maintaining compatibility with the original
 
 A Python library for automating interaction with websites.
 MechanicalSoup automatically stores and sends cookies, follows
@@ -36,13 +39,9 @@ Installation
 
 PyPy and PyPy3 are also supported (and tested against).
 
-Download and install the latest released version from `PyPI <https://pypi.python.org/pypi/MechanicalSoup/>`__::
+Download and install the development version from `GitHub <https://github.com/kennetanti/MechanicalSoup>`__::
 
-  pip install MechanicalSoup
-
-Download and install the development version from `GitHub <https://github.com/MechanicalSoup/MechanicalSoup>`__::
-
-  pip install git+https://github.com/MechanicalSoup/MechanicalSoup
+  pip install git+https://github.com/kennetanti/MechanicalSoup
 
 Installing from source (installs the version in the current working directory)::
 
